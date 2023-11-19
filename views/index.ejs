@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>
+		<%= title %>
+	</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="/fileshare/style.css">
+</head>
+
+<body>
+	<div class="navbar">
+		<div class="tbbd">
+			<button onclick="back()">◀️ <br>Back</button>
+			<input type="checkbox" onchange="toggle_hidden()" <%=show_hidden ? "checked" : "" %>>
+			<span class="cbt">
+				Show hidden files
+			</span>
+			<div>
+				<button onclick="upload()">📤Upload</button>
+			</div>
+		</div>
+		<div id="progress-bar">
+			<div id="progress">
+			</div>
+		</div>
+	</div>
+	<div id="folderview">
+		<% directory.forEach(file=> { %>
+			<a href="/<%= file.path %>">
+				<%= (file.isDir ? "📁" : "📄" ) + " " + file.name %>
+			</a>
+			<% }) %>
+	</div>
+	<script src="/fileshare/script.js"></script>
+</body>
+
+</html>
