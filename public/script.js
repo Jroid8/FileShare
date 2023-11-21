@@ -1,10 +1,5 @@
 const progress_bar = document.getElementById('progress-bar');
 const progress = document.getElementById('progress');
-const MODES = {
-	NORMAL: 'normal',
-};
-
-let mode = MODES.NORMAL;
 
 function upload() {
 	let input = document.createElement('input');
@@ -47,15 +42,11 @@ function toggle_hidden() {
 	}
 }
 function back() {
-	if (mode === MODES.NORMAL) {
-		if (window.history && window.history.length > 1) {
-			window.history.back();
-		} else {
-			window.location =
-				window.location.href.slice(0, window.location.href.lastIndexOf('/')) +
-				(show_hidden() ? '?h=1' : '');
-		}
+	if (window.history && window.history.length > 1) {
+		window.history.back();
 	} else {
-		change_mode(MODES.NORMAL);
+		window.location =
+			window.location.href.slice(0, window.location.href.lastIndexOf('/')) +
+			(show_hidden() ? '?h=1' : '');
 	}
 }
