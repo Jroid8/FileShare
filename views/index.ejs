@@ -1,39 +1,70 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-	<title>
-		<%= title %>
-	</title>
-	<meta charset="utf-8" />
-	<link rel="stylesheet" href="/fileshare/style.css">
-</head>
+	<head>
+		<title>
+			<%= title %>
+		</title>
+		<meta charset="utf-8" />
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script>
+			tailwind.config = {
+			  theme: {
+				extend: {
+					boxShadow: {
+						bx: 'rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px',
+						bx2: 'rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px',
+						bx3: 'rgba(0, 0, 0, 0.05) 0px 1px 2px 0px',
+				},
+					transitionDuration: {
+						2: '0.2s',
+						5: '0.5s',
+				},
+					transitionTimingFunction: {
+						'in-out': 'ease-in-out',
+				},
+				}
+			  }
+			}
+		  </script>
+	</head>
 
-<body>
-	<div class="navbar">
-		<div class="tbbd">
-			<button onclick="back()">◀️ <br>Back</button>
-			<input type="checkbox" onchange="toggle_hidden()" <%=show_hidden ? "checked" : "" %>>
-			<span class="cbt">
-				Show hidden files
-			</span>
-			<div>
-				<button onclick="upload()">📤Upload</button>
+	<body
+		class="m-0 p-0 text-black box-border w-screen h-screen text-md md:text-lg transflow-x-hidden bg-zinc-100">
+		<div class="overflow-x-hidden">
+			<div
+				class="w-screen flex items-center text-center justify-start m-2 md:justify-between md:m-8  md:text-md ">
+				<button
+					class="shadow-bx2 m-2 px-2 transition-all duration-2 ease-in-out md:px-4 py-2 rounded-md hover:shadow-bx bg-white "
+					onclick="back()">◀️ Back</button>
+				<div
+					class="shadow-bx2 m-2 px-2 transition-all duration-2 ease-in-out md:px-4 py-2 rounded-md hover:shadow-bx bg-white ">
+					<input type="checkbox" onchange="toggle_hidden()" <%=show_hidden ?
+						"checked"
+						: "" %>>
+					<span class>
+						Show hidden files
+					</span>
+				</div>
+				<button
+					class="shadow-bx2 m-2 px-2 transition-all duration-2 ease-in-out md:px-4 py-2 rounded-md hover:shadow-bx bg-white "
+					onclick="upload()">📤Upload</button>
+				<div id="progress-bar">
+					<div id="progress">
+					</div>
+				</div>
+			</div>
+			<div id="folderview"
+				class="flex flex-col m-5 ">
+				<% directory.forEach(file=> { %>
+				<a href="/<%= file.path %>"
+					class=" hover:ml-8 m-5 py-3 hover:shadow-bx3 transition-all duration-5 ease-in-out">
+					<%= (file.isDir ? "📁" : "📄" ) + " " + file.name %>
+				</a>
+				<% }) %>
 			</div>
 		</div>
-		<div id="progress-bar">
-			<div id="progress">
-			</div>
-		</div>
-	</div>
-	<div id="folderview">
-		<% directory.forEach(file=> { %>
-			<a href="/<%= file.path %>">
-				<%= (file.isDir ? "📁" : "📄" ) + " " + file.name %>
-			</a>
-			<% }) %>
-	</div>
-	<script src="/fileshare/script.js"></script>
-</body>
+		<script src="/FileShare/script.js"></script>
+	</body>
 
 </html>
