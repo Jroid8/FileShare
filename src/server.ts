@@ -4,12 +4,13 @@ import path from "path";
 import multer from "multer";
 import { networkInterfaces } from 'os';
 
+const port = 8080;
 const nets = networkInterfaces();
 for (const name of Object.keys(nets)) {
 	if (nets[name] === undefined) continue;
 	for (const net of nets[name]!) {
-		if (net.family === "IPv4" && !net.internal) {
-			console.log(name + ": " + net.address);
+		if (net.family === "IPv4" && !net.internal && net.address.startsWith("192.168.")) {
+			console.log(name + ": " + net.address + ":" + port);
 		}
 	}
 }
@@ -62,4 +63,4 @@ app.all("*", (req, res) => {
   } else res.sendFile(path.resolve(req_path));
 });
 
-app.listen(8080);
+app.listen(port);
