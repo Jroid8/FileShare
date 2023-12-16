@@ -1,0 +1,3 @@
+[submodule "public/qrcode"]
+	path = public/qrcode
+	url = git@github.com:davidshimjs/qrcodejs.git

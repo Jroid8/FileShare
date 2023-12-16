@@ -2,18 +2,30 @@ import express from "express";
 import fs from "fs";
 import path from "path";
 import multer from "multer";
-import { networkInterfaces } from 'os';
+import { networkInterfaces } from "os";
+import { keyInSelect } from "readline-sync";
 
 const port = 8080;
-const nets = networkInterfaces();
-for (const name of Object.keys(nets)) {
-	if (nets[name] === undefined) continue;
-	for (const net of nets[name]!) {
-		if (net.family === "IPv4" && !net.internal && net.address.startsWith("192.168.")) {
-			console.log(name + ": " + net.address + ":" + port);
-		}
-	}
-}
+let address =
+  "http://" +
+  (() => {
+    let localIPs = Object.values(networkInterfaces())
+      .filter((net) => !!net)
+      .flatMap((net) => net!)
+      .filter((net) => net.family === "IPv4" && !net.internal)
+      .map((net) => net.address);
+    if (localIPs.length > 1) {
+      return localIPs[
+        keyInSelect(localIPs, "Select an ip to be displayed: ", {
+          cancel: false,
+        })
+      ];
+    } else {
+      return localIPs[0];
+    }
+  })() +
+  ":" +
+  port;
 
 const share_dir = process.argv[2] ?? ".";
 
@@ -42,6 +54,7 @@ app.all("*", (req, res) => {
   if (!fs.existsSync(req_path)) res.sendStatus(404);
   else if (fs.lstatSync(req_path).isDirectory()) {
     res.render("index.ejs", {
+			address: address,
       show_hidden: show_hidden,
       title: path.basename(req_path),
       directory: fs
