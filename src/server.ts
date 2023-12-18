@@ -42,6 +42,7 @@ const upload = multer({ storage: storage });
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "../views"));
 
+app.use("/fileshare/dist", express.static(path.join(__dirname, "..", "dist")));
 app.use("/fileshare", express.static(path.join(__dirname, "..", "public")));
 
 app.post("/fileshare/upload", upload.array("files"), (_, res) => {
